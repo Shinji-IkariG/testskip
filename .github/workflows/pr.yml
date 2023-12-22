@@ -6,8 +6,22 @@ on:
       - '**/*.mk'
 
 jobs:
-  test-job:
+  test-job1:
     runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Check for .mk file changes
+      id: check_changes
+      run: |
+        CHANGED_FILES=$(git diff --name-only ${{ github.base_ref }}...${{ github.head_ref }} | grep '\.mk$' || true)
+        if [[ -z "$CHANGED_FILES" ]]; then
+          echo "SHOULD_SKIP=false" >> $GITHUB_ENV
+        else
+          echo "SHOULD_SKIP=true" >> $GITHUB_ENV
+         
+  test-job2:
+    runs-on: ubuntu-latest
+    if: env.SHOULD_SKIP != 'true'
     steps:
     - uses: actions/checkout@v3
 
