@@ -1,0 +1,20 @@
+name: Test Conditional Workflow
+
+on: [pull_request]
+
+jobs:
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Conditional Step
+      if: steps.check_changes.outputs.should_skip != 'true'
+      run: |
+        echo "This step is running because should_skip is not true."
+
+    # 另一个条件步骤
+    - name: Another Conditional Step
+      if: steps.check_changes.outputs.should_skip != 'true'
+      run: |
+        echo "This is another step that is only running because should_skip is not true."
