@@ -2,8 +2,6 @@ name: Test Conditional Workflow
 
 on: 
   pull_request:
-    paths-ignore:
-      - '**/*.mk'
 
 jobs:
   test-job1:
